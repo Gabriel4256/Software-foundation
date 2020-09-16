@@ -1,0 +1,18 @@
+DIGEST 744ef2e5d1a29900b3bd83bed32f3a77
+FLF.AltAutoTest
+R70:75 Coq.Strings.String <> <> lib
+R101:107 LF.AltAuto <> <> lib
+ax 121:127 <> MISSING
+mod 144:148 <> Check
+R214:220 LF.AltAutoTest <> MISSING defax
+R214:220 LF.AltAutoTest <> MISSING defax
+R413:416 Coq.Init.Datatypes <> Some constr
+R413:416 Coq.Init.Datatypes <> Some constr
+R596:599 Coq.Init.Datatypes <> None constr
+R596:599 Coq.Init.Datatypes <> None constr
+R681:685 LF.AltAutoTest Check <> mod
+R712:718 LF.AltAuto <> <> lib
+def 736:744 <> Unnamed_thm
+R741:744 Coq.Init.Logic <> True ind
+R902:924 LF.AltAuto <> manual_grade_for_re_opt def
+R1125:1154 LF.AltAuto <> manual_grade_for_pumping_redux def

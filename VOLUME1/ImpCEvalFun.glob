@@ -1,0 +1,432 @@
+DIGEST 97f88c16ff0e596deedb25e5ea275073
+FLF.ImpCEvalFun
+R533:535 Coq.micromega.Lia <> <> lib
+R562:572 Coq.Arith.Arith <> <> lib
+R598:600 LF.Imp <> <> lib
+R602:605 LF.Maps <> <> lib
+def 711:721 <> ceval_step1
+R729:733 LF.Imp <> state def
+binder 724:725 <> st:1
+R741:743 LF.Imp <> com ind
+binder 737:737 <> c:2
+R748:752 LF.Imp <> state def
+R765:765 LF.ImpCEvalFun <> c:2 var
+R778:780 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R785:787 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R781:784 LF.Imp <> :com:com_scope:'skip' not
+R800:801 LF.ImpCEvalFun <> st:1 var
+R809:811 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R819:821 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R813:816 LF.Imp <> :com:com_scope:x_':='_x not
+R836:840 LF.Maps <> :::x_'!->'_x_';'_x not
+R852:854 LF.Maps <> :::x_'!->'_x_';'_x not
+R855:856 LF.ImpCEvalFun <> st:1 var
+R841:845 LF.Imp <> aeval def
+R847:848 LF.ImpCEvalFun <> st:1 var
+R865:867 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R875:877 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R870:872 LF.Imp <> :com:com_scope:x_';'_x not
+R901:911 LF.ImpCEvalFun <> ceval_step1:3 def
+R913:914 LF.ImpCEvalFun <> st:1 var
+binder 894:896 <> st':5
+R930:940 LF.ImpCEvalFun <> ceval_step1:3 def
+R942:944 LF.ImpCEvalFun <> st':5 var
+R955:957 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R982:984 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R958:960 LF.Imp <> :com:com_scope:'if'_x_'then'_x_'else'_x_'end' not
+R962:967 LF.Imp <> :com:com_scope:'if'_x_'then'_x_'else'_x_'end' not
+R970:975 LF.Imp <> :com:com_scope:'if'_x_'then'_x_'else'_x_'end' not
+R978:981 LF.Imp <> :com:com_scope:'if'_x_'then'_x_'else'_x_'end' not
+R1001:1005 LF.Imp <> beval def
+R1007:1008 LF.ImpCEvalFun <> st:1 var
+R1061:1071 LF.ImpCEvalFun <> ceval_step1:3 def
+R1073:1074 LF.ImpCEvalFun <> st:1 var
+R1028:1038 LF.ImpCEvalFun <> ceval_step1:3 def
+R1040:1041 LF.ImpCEvalFun <> st:1 var
+R1085:1087 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R1106:1108 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R1088:1093 LF.Imp <> :com:com_scope:'while'_x_'do'_x_'end' not
+R1096:1099 LF.Imp <> :com:com_scope:'while'_x_'do'_x_'end' not
+R1102:1105 LF.Imp <> :com:com_scope:'while'_x_'do'_x_'end' not
+R1121:1122 LF.ImpCEvalFun <> st:1 var
+def 3135:3145 <> ceval_step2
+R3153:3157 LF.Imp <> state def
+binder 3148:3149 <> st:6
+R3165:3167 LF.Imp <> com ind
+binder 3161:3161 <> c:7
+R3175:3177 Coq.Init.Datatypes <> nat ind
+binder 3171:3171 <> i:8
+R3182:3186 LF.Imp <> state def
+R3199:3199 LF.ImpCEvalFun <> i:8 var
+R3210:3210 Coq.Init.Datatypes <> O constr
+R3215:3222 LF.Imp <> empty_st def
+R3228:3228 Coq.Init.Datatypes <> S constr
+R3246:3246 LF.ImpCEvalFun <> c:7 var
+R3261:3263 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R3268:3270 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R3264:3267 LF.Imp <> :com:com_scope:'skip' not
+R3285:3286 LF.ImpCEvalFun <> st:6 var
+R3296:3298 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R3306:3308 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R3300:3303 LF.Imp <> :com:com_scope:x_':='_x not
+R3325:3329 LF.Maps <> :::x_'!->'_x_';'_x not
+R3341:3343 LF.Maps <> :::x_'!->'_x_';'_x not
+R3344:3345 LF.ImpCEvalFun <> st:6 var
+R3330:3334 LF.Imp <> aeval def
+R3336:3337 LF.ImpCEvalFun <> st:6 var
+R3356:3358 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R3366:3368 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R3361:3363 LF.Imp <> :com:com_scope:x_';'_x not
+R3394:3404 LF.ImpCEvalFun <> ceval_step2:9 def
+R3406:3407 LF.ImpCEvalFun <> st:6 var
+binder 3387:3389 <> st':12
+R3428:3438 LF.ImpCEvalFun <> ceval_step2:9 def
+R3440:3442 LF.ImpCEvalFun <> st':12 var
+R3458:3460 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R3485:3487 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R3461:3463 LF.Imp <> :com:com_scope:'if'_x_'then'_x_'else'_x_'end' not
+R3465:3470 LF.Imp <> :com:com_scope:'if'_x_'then'_x_'else'_x_'end' not
+R3473:3478 LF.Imp <> :com:com_scope:'if'_x_'then'_x_'else'_x_'end' not
+R3481:3484 LF.Imp <> :com:com_scope:'if'_x_'then'_x_'else'_x_'end' not
+R3506:3510 LF.Imp <> beval def
+R3512:3513 LF.ImpCEvalFun <> st:6 var
+R3573:3583 LF.ImpCEvalFun <> ceval_step2:9 def
+R3585:3586 LF.ImpCEvalFun <> st:6 var
+R3535:3545 LF.ImpCEvalFun <> ceval_step2:9 def
+R3547:3548 LF.ImpCEvalFun <> st:6 var
+R3602:3604 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R3623:3625 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R3605:3610 LF.Imp <> :com:com_scope:'while'_x_'do'_x_'end' not
+R3613:3616 LF.Imp <> :com:com_scope:'while'_x_'do'_x_'end' not
+R3619:3622 LF.Imp <> :com:com_scope:'while'_x_'do'_x_'end' not
+R3644:3648 LF.Imp <> beval def
+R3650:3651 LF.ImpCEvalFun <> st:6 var
+R3758:3759 LF.ImpCEvalFun <> st:6 var
+R3683:3693 LF.ImpCEvalFun <> ceval_step2:9 def
+R3695:3696 LF.ImpCEvalFun <> st:6 var
+binder 3676:3678 <> st':13
+R3722:3732 LF.ImpCEvalFun <> ceval_step2:9 def
+R3738:3738 LF.ImpCEvalFun <> c:7 var
+R3734:3736 LF.ImpCEvalFun <> st':13 var
+def 4560:4570 <> ceval_step3
+R4578:4582 LF.Imp <> state def
+binder 4573:4574 <> st:14
+R4590:4592 LF.Imp <> com ind
+binder 4586:4586 <> c:15
+R4600:4602 Coq.Init.Datatypes <> nat ind
+binder 4596:4596 <> i:16
+R4627:4632 Coq.Init.Datatypes <> option ind
+R4634:4638 LF.Imp <> state def
+R4651:4651 LF.ImpCEvalFun <> i:16 var
+R4662:4662 Coq.Init.Datatypes <> O constr
+R4667:4670 Coq.Init.Datatypes <> None constr
+R4676:4676 Coq.Init.Datatypes <> S constr
+R4694:4694 LF.ImpCEvalFun <> c:15 var
+R4709:4711 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R4716:4718 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R4712:4715 LF.Imp <> :com:com_scope:'skip' not
+R4733:4736 Coq.Init.Datatypes <> Some constr
+R4738:4739 LF.ImpCEvalFun <> st:14 var
+R4749:4751 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R4759:4761 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R4753:4756 LF.Imp <> :com:com_scope:x_':='_x not
+R4776:4779 Coq.Init.Datatypes <> Some constr
+R4783:4787 LF.Maps <> :::x_'!->'_x_';'_x not
+R4799:4801 LF.Maps <> :::x_'!->'_x_';'_x not
+R4802:4803 LF.ImpCEvalFun <> st:14 var
+R4788:4792 LF.Imp <> aeval def
+R4794:4795 LF.ImpCEvalFun <> st:14 var
+R4814:4816 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R4824:4826 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R4819:4821 LF.Imp <> :com:com_scope:x_';'_x not
+R4848:4858 LF.ImpCEvalFun <> ceval_step3:17 def
+R4860:4861 LF.ImpCEvalFun <> st:14 var
+R4887:4890 Coq.Init.Datatypes <> Some constr
+R4899:4909 LF.ImpCEvalFun <> ceval_step3:17 def
+R4933:4936 Coq.Init.Datatypes <> None constr
+R4941:4944 Coq.Init.Datatypes <> None constr
+R4968:4970 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R4995:4997 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R4971:4973 LF.Imp <> :com:com_scope:'if'_x_'then'_x_'else'_x_'end' not
+R4975:4980 LF.Imp <> :com:com_scope:'if'_x_'then'_x_'else'_x_'end' not
+R4983:4988 LF.Imp <> :com:com_scope:'if'_x_'then'_x_'else'_x_'end' not
+R4991:4994 LF.Imp <> :com:com_scope:'if'_x_'then'_x_'else'_x_'end' not
+R5016:5020 LF.Imp <> beval def
+R5022:5023 LF.ImpCEvalFun <> st:14 var
+R5083:5093 LF.ImpCEvalFun <> ceval_step3:17 def
+R5095:5096 LF.ImpCEvalFun <> st:14 var
+R5045:5055 LF.ImpCEvalFun <> ceval_step3:17 def
+R5057:5058 LF.ImpCEvalFun <> st:14 var
+R5112:5114 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R5133:5135 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R5115:5120 LF.Imp <> :com:com_scope:'while'_x_'do'_x_'end' not
+R5123:5126 LF.Imp <> :com:com_scope:'while'_x_'do'_x_'end' not
+R5129:5132 LF.Imp <> :com:com_scope:'while'_x_'do'_x_'end' not
+R5154:5158 LF.Imp <> beval def
+R5160:5161 LF.ImpCEvalFun <> st:14 var
+R5330:5333 Coq.Init.Datatypes <> Some constr
+R5335:5336 LF.ImpCEvalFun <> st:14 var
+R5189:5199 LF.ImpCEvalFun <> ceval_step3:17 def
+R5201:5202 LF.ImpCEvalFun <> st:14 var
+R5233:5236 Coq.Init.Datatypes <> Some constr
+R5245:5255 LF.ImpCEvalFun <> ceval_step3:17 def
+R5261:5261 LF.ImpCEvalFun <> c:15 var
+R5283:5286 Coq.Init.Datatypes <> None constr
+R5291:5294 Coq.Init.Datatypes <> None constr
+R5607:5610 Coq.Init.Datatypes <> Some constr
+R5631:5634 Coq.Init.Datatypes <> None constr
+R5639:5642 Coq.Init.Datatypes <> None constr
+not 5547:5547 <> :::'LETOPT'_x_'<=='_x_'IN'_x
+def 5705:5714 <> ceval_step
+R5722:5726 LF.Imp <> state def
+binder 5717:5718 <> st:20
+R5734:5736 LF.Imp <> com ind
+binder 5730:5730 <> c:21
+R5744:5746 Coq.Init.Datatypes <> nat ind
+binder 5740:5740 <> i:22
+R5771:5776 Coq.Init.Datatypes <> option ind
+R5778:5782 LF.Imp <> state def
+R5795:5795 LF.ImpCEvalFun <> i:22 var
+R5806:5806 Coq.Init.Datatypes <> O constr
+R5811:5814 Coq.Init.Datatypes <> None constr
+R5820:5820 Coq.Init.Datatypes <> S constr
+R5838:5838 LF.ImpCEvalFun <> c:21 var
+R5853:5855 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R5860:5862 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R5856:5859 LF.Imp <> :com:com_scope:'skip' not
+R5877:5880 Coq.Init.Datatypes <> Some constr
+R5882:5883 LF.ImpCEvalFun <> st:20 var
+R5893:5895 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R5903:5905 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R5897:5900 LF.Imp <> :com:com_scope:x_':='_x not
+R5920:5923 Coq.Init.Datatypes <> Some constr
+R5927:5931 LF.Maps <> :::x_'!->'_x_';'_x not
+R5943:5945 LF.Maps <> :::x_'!->'_x_';'_x not
+R5946:5947 LF.ImpCEvalFun <> st:20 var
+R5932:5936 LF.Imp <> aeval def
+R5938:5939 LF.ImpCEvalFun <> st:20 var
+R5958:5960 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R5968:5970 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R5963:5965 LF.Imp <> :com:com_scope:x_';'_x not
+R5985:5991 LF.ImpCEvalFun <> :::'LETOPT'_x_'<=='_x_'IN'_x not
+R5995:5999 LF.ImpCEvalFun <> :::'LETOPT'_x_'<=='_x_'IN'_x not
+R6019:6032 LF.ImpCEvalFun <> :::'LETOPT'_x_'<=='_x_'IN'_x not
+R6000:6009 LF.ImpCEvalFun <> ceval_step:23 def
+R6011:6012 LF.ImpCEvalFun <> st:20 var
+binder 5992:5994 <> st':26
+R6033:6042 LF.ImpCEvalFun <> ceval_step:23 def
+R6044:6046 LF.ImpCEvalFun <> st':26 var
+R6062:6064 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R6089:6091 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R6065:6067 LF.Imp <> :com:com_scope:'if'_x_'then'_x_'else'_x_'end' not
+R6069:6074 LF.Imp <> :com:com_scope:'if'_x_'then'_x_'else'_x_'end' not
+R6077:6082 LF.Imp <> :com:com_scope:'if'_x_'then'_x_'else'_x_'end' not
+R6085:6088 LF.Imp <> :com:com_scope:'if'_x_'then'_x_'else'_x_'end' not
+R6110:6114 LF.Imp <> beval def
+R6116:6117 LF.ImpCEvalFun <> st:20 var
+R6176:6185 LF.ImpCEvalFun <> ceval_step:23 def
+R6187:6188 LF.ImpCEvalFun <> st:20 var
+R6139:6148 LF.ImpCEvalFun <> ceval_step:23 def
+R6150:6151 LF.ImpCEvalFun <> st:20 var
+R6204:6206 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R6225:6227 LF.Imp <> ::com_scope:'<{'_x_'}>' not
+R6207:6212 LF.Imp <> :com:com_scope:'while'_x_'do'_x_'end' not
+R6215:6218 LF.Imp <> :com:com_scope:'while'_x_'do'_x_'end' not
+R6221:6224 LF.Imp <> :com:com_scope:'while'_x_'do'_x_'end' not
+R6246:6250 LF.Imp <> beval def
+R6252:6253 LF.ImpCEvalFun <> st:20 var
+R6362:6365 Coq.Init.Datatypes <> Some constr
+R6367:6368 LF.ImpCEvalFun <> st:20 var
+R6274:6280 LF.ImpCEvalFun <> :::'LETOPT'_x_'<=='_x_'IN'_x not
+R6284:6288 LF.ImpCEvalFun <> :::'LETOPT'_x_'<=='_x_'IN'_x not
+R6308:6326 LF.ImpCEvalFun <> :::'LETOPT'_x_'<=='_x_'IN'_x not
+R6289:6298 LF.ImpCEvalFun <> ceval_step:23 def
+R6300:6301 LF.ImpCEvalFun <> st:20 var
+binder 6281:6283 <> st':27
+R6327:6336 LF.ImpCEvalFun <> ceval_step:23 def
+R6342:6342 LF.ImpCEvalFun <> c:21 var
+R6338:6340 LF.ImpCEvalFun <> st':27 var
+def 6397:6406 <> test_ceval
+R6412:6416 LF.Imp <> state def
+binder 6409:6410 <> st:28
+R6422:6424 LF.Imp <> com ind
+binder 6420:6420 <> c:29
+R6438:6447 LF.ImpCEvalFun <> ceval_step def
+R6452:6452 LF.ImpCEvalFun <> c:29 var
+R6449:6450 LF.ImpCEvalFun <> st:28 var
+R6467:6470 Coq.Init.Datatypes <> None constr
+R6478:6481 Coq.Init.Datatypes <> None constr
+R6487:6490 Coq.Init.Datatypes <> Some constr
+R6498:6501 Coq.Init.Datatypes <> Some constr
+R6503:6503 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6508:6509 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6514:6515 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6520:6520 Coq.Init.Datatypes <> ::core_scope:'('_x_','_x_','_'..'_','_x_')' not
+R6504:6505 LF.ImpCEvalFun <> st:28 var
+R6507:6507 LF.Imp <> X def
+R6510:6511 LF.ImpCEvalFun <> st:28 var
+R6513:6513 LF.Imp <> Y def
+R6516:6517 LF.ImpCEvalFun <> st:28 var
+R6519:6519 LF.Imp <> Z def
+def 6976:6983 <> pup_to_n
+R6987:6989 LF.Imp <> com ind
+prf 7756:7772 <> ceval_step__ceval
+binder 7782:7782 <> c:30
+binder 7784:7785 <> st:31
+binder 7787:7789 <> st':32
+R7798:7798 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7837:7847 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R7850:7853 LF.Imp <> :::x_'=['_x_']=>'_x not
+R7855:7859 LF.Imp <> :::x_'=['_x_']=>'_x not
+R7854:7854 LF.ImpCEvalFun <> c:30 var
+R7848:7849 LF.ImpCEvalFun <> st:31 var
+R7860:7862 LF.ImpCEvalFun <> st':32 var
+R7799:7805 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R7807:7808 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 7806:7806 <> i:33
+R7826:7828 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R7809:7818 LF.ImpCEvalFun <> ceval_step def
+R7825:7825 LF.ImpCEvalFun <> i:33 var
+R7823:7823 LF.ImpCEvalFun <> c:30 var
+R7820:7821 LF.ImpCEvalFun <> st:31 var
+R7829:7832 Coq.Init.Datatypes <> Some constr
+R7834:7836 LF.ImpCEvalFun <> st':32 var
+R8244:8249 LF.Imp <> E_Skip constr
+R8244:8249 LF.Imp <> E_Skip constr
+R8275:8279 LF.Imp <> E_Ass constr
+R8275:8279 LF.Imp <> E_Ass constr
+R8330:8339 LF.ImpCEvalFun <> ceval_step def
+R8330:8339 LF.ImpCEvalFun <> ceval_step def
+R8431:8435 LF.Imp <> E_Seq constr
+R8431:8435 LF.Imp <> E_Seq constr
+R8652:8656 LF.Imp <> beval def
+R8652:8656 LF.Imp <> beval def
+R8715:8722 LF.Imp <> E_IfTrue constr
+R8715:8722 LF.Imp <> E_IfTrue constr
+R8828:8836 LF.Imp <> E_IfFalse constr
+R8828:8836 LF.Imp <> E_IfFalse constr
+R8931:8935 LF.Imp <> beval def
+R8931:8935 LF.Imp <> beval def
+R8998:9007 LF.ImpCEvalFun <> ceval_step def
+R8998:9007 LF.ImpCEvalFun <> ceval_step def
+R9075:9085 LF.Imp <> E_WhileTrue constr
+R9075:9085 LF.Imp <> E_WhileTrue constr
+R9367:9378 LF.Imp <> E_WhileFalse constr
+R9367:9378 LF.Imp <> E_WhileFalse constr
+def 9909:9946 <> manual_grade_for_ceval_step__ceval_inf
+R9950:9955 Coq.Init.Datatypes <> option ind
+R9961:9961 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
+R9958:9960 Coq.Init.Datatypes <> nat ind
+R9962:9967 Coq.Strings.String <> string ind
+R9973:9976 Coq.Init.Datatypes <> None constr
+prf 9998:10012 <> ceval_step_more
+binder 10022:10023 <> i1:34
+binder 10025:10026 <> i2:35
+binder 10028:10029 <> st:36
+binder 10031:10033 <> st':37
+binder 10035:10035 <> c:38
+R10048:10053 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10083:10088 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R10107:10109 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R10089:10098 LF.ImpCEvalFun <> ceval_step def
+R10105:10106 LF.ImpCEvalFun <> i2:35 var
+R10103:10103 LF.ImpCEvalFun <> c:38 var
+R10100:10101 LF.ImpCEvalFun <> st:36 var
+R10110:10113 Coq.Init.Datatypes <> Some constr
+R10115:10117 LF.ImpCEvalFun <> st':37 var
+R10072:10074 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R10054:10063 LF.ImpCEvalFun <> ceval_step def
+R10070:10071 LF.ImpCEvalFun <> i1:34 var
+R10068:10068 LF.ImpCEvalFun <> c:38 var
+R10065:10066 LF.ImpCEvalFun <> st:36 var
+R10075:10078 Coq.Init.Datatypes <> Some constr
+R10080:10082 LF.ImpCEvalFun <> st':37 var
+R10042:10045 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R10040:10041 LF.ImpCEvalFun <> i1:34 var
+R10046:10047 LF.ImpCEvalFun <> i2:35 var
+R10325:10328 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R10325:10328 Coq.Init.Peano <> ::nat_scope:x_'<='_x not
+R10570:10579 LF.ImpCEvalFun <> ceval_step def
+R10570:10579 LF.ImpCEvalFun <> ceval_step def
+R10909:10913 LF.Imp <> beval def
+R10909:10913 LF.Imp <> beval def
+R11036:11040 LF.Imp <> beval def
+R11036:11040 LF.Imp <> beval def
+R11081:11090 LF.ImpCEvalFun <> ceval_step def
+R11081:11090 LF.ImpCEvalFun <> ceval_step def
+prf 11609:11625 <> ceval__ceval_step
+binder 11635:11635 <> c:39
+binder 11637:11638 <> st:40
+binder 11640:11642 <> st':41
+R11666:11675 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R11676:11682 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R11684:11685 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 11683:11683 <> i:42
+R11703:11705 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11686:11695 LF.ImpCEvalFun <> ceval_step def
+R11702:11702 LF.ImpCEvalFun <> i:42 var
+R11700:11700 LF.ImpCEvalFun <> c:39 var
+R11697:11698 LF.ImpCEvalFun <> st:40 var
+R11706:11709 Coq.Init.Datatypes <> Some constr
+R11711:11713 LF.ImpCEvalFun <> st':41 var
+R11653:11656 LF.Imp <> :::x_'=['_x_']=>'_x not
+R11658:11662 LF.Imp <> :::x_'=['_x_']=>'_x not
+R11657:11657 LF.ImpCEvalFun <> c:39 var
+R11651:11652 LF.ImpCEvalFun <> st:40 var
+R11663:11665 LF.ImpCEvalFun <> st':41 var
+prf 11813:11841 <> ceval_and_ceval_step_coincide
+binder 11851:11851 <> c:43
+binder 11853:11854 <> st:44
+binder 11856:11858 <> st':45
+R11882:11888 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
+R11869:11872 LF.Imp <> :::x_'=['_x_']=>'_x not
+R11874:11878 LF.Imp <> :::x_'=['_x_']=>'_x not
+R11873:11873 LF.ImpCEvalFun <> c:43 var
+R11867:11868 LF.ImpCEvalFun <> st:44 var
+R11879:11881 LF.ImpCEvalFun <> st':45 var
+R11889:11895 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+R11897:11898 Coq.Init.Logic <> ::type_scope:'exists'_x_'..'_x_','_x not
+binder 11896:11896 <> i:46
+R11916:11918 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R11899:11908 LF.ImpCEvalFun <> ceval_step def
+R11915:11915 LF.ImpCEvalFun <> i:46 var
+R11913:11913 LF.ImpCEvalFun <> c:43 var
+R11910:11911 LF.ImpCEvalFun <> st:44 var
+R11919:11922 Coq.Init.Datatypes <> Some constr
+R11924:11926 LF.ImpCEvalFun <> st':45 var
+R11970:11986 LF.ImpCEvalFun <> ceval__ceval_step prfax
+R11970:11986 LF.ImpCEvalFun <> ceval__ceval_step prfax
+R11995:12011 LF.ImpCEvalFun <> ceval_step__ceval thm
+R11995:12011 LF.ImpCEvalFun <> ceval_step__ceval thm
+prf 12326:12345 <> ceval_deterministic'
+binder 12356:12356 <> c:47
+binder 12358:12359 <> st:48
+binder 12361:12363 <> st1:49
+binder 12365:12367 <> st2:50
+R12390:12398 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12414:12422 Coq.Init.Logic <> ::type_scope:x_'->'_x not
+R12426:12428 Coq.Init.Logic <> ::type_scope:x_'='_x not
+R12423:12425 LF.ImpCEvalFun <> st1:49 var
+R12429:12431 LF.ImpCEvalFun <> st2:50 var
+R12401:12404 LF.Imp <> :::x_'=['_x_']=>'_x not
+R12406:12410 LF.Imp <> :::x_'=['_x_']=>'_x not
+R12405:12405 LF.ImpCEvalFun <> c:47 var
+R12399:12400 LF.ImpCEvalFun <> st:48 var
+R12411:12413 LF.ImpCEvalFun <> st2:50 var
+R12377:12380 LF.Imp <> :::x_'=['_x_']=>'_x not
+R12382:12386 LF.Imp <> :::x_'=['_x_']=>'_x not
+R12381:12381 LF.ImpCEvalFun <> c:47 var
+R12375:12376 LF.ImpCEvalFun <> st:48 var
+R12387:12389 LF.ImpCEvalFun <> st1:49 var
+R12480:12496 LF.ImpCEvalFun <> ceval__ceval_step prfax
+R12480:12496 LF.ImpCEvalFun <> ceval__ceval_step prfax
+R12514:12530 LF.ImpCEvalFun <> ceval__ceval_step prfax
+R12514:12530 LF.ImpCEvalFun <> ceval__ceval_step prfax
+R12634:12636 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R12604:12618 LF.ImpCEvalFun <> ceval_step_more thm
+R12634:12636 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R12604:12618 LF.ImpCEvalFun <> ceval_step_more thm
+R12686:12688 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R12656:12670 LF.ImpCEvalFun <> ceval_step_more thm
+R12686:12688 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
+R12656:12670 LF.ImpCEvalFun <> ceval_step_more thm

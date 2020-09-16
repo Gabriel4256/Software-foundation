@@ -1,0 +1,16 @@
+DIGEST 1d7401d48ac1490ee4ba6f3df069a8f5
+FLF.PrefaceTest
+R70:75 Coq.Strings.String <> <> lib
+R101:107 LF.Preface <> <> lib
+ax 121:127 <> MISSING
+mod 144:148 <> Check
+R214:220 LF.PrefaceTest <> MISSING defax
+R214:220 LF.PrefaceTest <> MISSING defax
+R413:416 Coq.Init.Datatypes <> Some constr
+R413:416 Coq.Init.Datatypes <> Some constr
+R596:599 Coq.Init.Datatypes <> None constr
+R596:599 Coq.Init.Datatypes <> None constr
+R681:685 LF.PrefaceTest Check <> mod
+R712:718 LF.Preface <> <> lib
+def 736:744 <> Unnamed_thm
+R741:744 Coq.Init.Logic <> True ind
