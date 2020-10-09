@@ -446,13 +446,24 @@ Admitted.
     it is sound.  Use the tacticals we've just seen to make the proof
     as elegant as possible. *)
 
-Fixpoint optimize_0plus_b (b : bexp) : bexp
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Fixpoint optimize_0plus_b (b : bexp) : bexp :=
+  match b with
+  | BTrue => BTrue
+  | BFalse => BFalse
+  | BEq a1 a2 => BEq (optimize_0plus a1) (optimize_0plus a2)
+  | BLe a1 a2 => BLe (optimize_0plus a1) (optimize_0plus a2)
+  | BNot b => BNot (optimize_0plus_b b)
+  | BAnd b1 b2 => BAnd (optimize_0plus_b b1) (optimize_0plus_b b2)
+  end.
 
 Theorem optimize_0plus_b_sound : forall b,
   beval (optimize_0plus_b b) = beval b.
 Proof.
-  (* FILL IN HERE *) Admitted.
+
+  induction b; simpl ; repeat (rewrite optimize_0plus_sound ; try reflexivity) ; try reflexivity.
+  + rewrite IHb. reflexivity.
+  + rewrite IHb1. rewrite IHb2. reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 4 stars, standard, optional (optimize) 
@@ -813,14 +824,33 @@ Qed.
 
 Reserved Notation "e '==>b' b" (at level 90, left associativity).
 Inductive bevalR: bexp -> bool -> Prop :=
-(* FILL IN HERE *)
+  | E_Btrue : bevalR BTrue true
+  | E_Bfalse : bevalR BFalse false
+  | E_BEq (a b: aexp) (n m: nat)(H1: a ==> n) (H2: b ==> m): bevalR (BEq a b) (n =? m)
+  | E_BLe (a b: aexp) (n m: nat)(_: a ==> n) (_: b ==> m): bevalR (BLe a b) (n <=? m)
+  | E_BNot a b (_: bevalR a b) : bevalR (BNot a) (negb b) 
+  | E_BAnd a b b1 b2 (_: bevalR a b1) (_: bevalR b b2): bevalR (BAnd a b) (andb b1 b2)
 where "e '==>b' b" := (bevalR e b) : type_scope
 .
 
 Lemma beval_iff_bevalR : forall b bv,
   b ==>b bv <-> beval b = bv.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  split ; intros; simpl. try reflexivity; induction H ; simpl ; try reflexivity. 
+  - rewrite aeval_iff_aevalR' in H1. rewrite aeval_iff_aevalR' in H2.
+    rewrite H1. rewrite H2. reflexivity.
+  - rewrite aeval_iff_aevalR' in H. rewrite aeval_iff_aevalR' in H0.
+    rewrite H. rewrite H0. reflexivity.
+  - rewrite IHbevalR. reflexivity.
+  - rewrite IHbevalR1. rewrite IHbevalR2. reflexivity.
+  - generalize dependent bv. induction b ; intros ; rewrite <- H ; simpl.
+    + apply E_Btrue.
+    + apply E_Bfalse.
+    + apply E_BEq. apply aeval_iff_aevalR'. reflexivity. apply aeval_iff_aevalR'. reflexivity.
+    + apply E_BLe. apply aeval_iff_aevalR'. reflexivity. apply aeval_iff_aevalR'. reflexivity. 
+    + apply E_BNot. apply IHb. reflexivity.
+    + apply (E_BAnd b1 b2 (beval b1) (beval b2)). apply IHb1. reflexivity. apply IHb2. reflexivity. 
+Qed.
 (** [] *)
 
 End AExp.
@@ -1505,7 +1535,10 @@ Example ceval_example2:
     Z := 2
   ]=> (Z !-> 2 ; Y !-> 1 ; X !-> 0).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  apply E_Seq with (X !-> 0). apply E_Ass. reflexivity.
+  - apply E_Seq with (Y !-> 1 ; X !-> 0). apply E_Ass. reflexivity.
+  apply E_Ass. reflexivity.
+Qed.
 (** [] *)
 
 Set Printing Implicit.
@@ -1519,15 +1552,33 @@ Check @ceval_example2.
     which you can reverse-engineer to discover the program you should
     write.  The proof of that theorem will be somewhat lengthy. *)
 
-Definition pup_to_n : com
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Definition pup_to_n : com :=
+  <{
+    Y := 0 ; 
+    while 1 <=X do
+    Y := Y + X;
+    X := X - 1
+    end
+  }>.
 
 Theorem pup_to_2_ceval :
   (X !-> 2) =[
     pup_to_n
   ]=> (X !-> 0 ; Y !-> 3 ; X !-> 1 ; Y !-> 2 ; Y !-> 0 ; X !-> 2).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  unfold pup_to_n.
+  apply E_Seq with ( Y !-> 0 ; X !-> 2).
+  apply E_Ass. reflexivity.
+  apply E_WhileTrue with ( X !-> 1; Y !-> 2; Y !->0 ; X !-> 2).
+  - reflexivity.
+  - apply E_Seq with ( Y!->2; Y !-> 0; X !-> 2).
+    * apply E_Ass. simpl. reflexivity.
+    * apply E_Ass. reflexivity.
+  - apply E_WhileTrue with (X !-> 0; Y !-> 3; X !-> 1; Y !-> 2; Y !-> 0; X !-> 2).
+    * reflexivity.
+    * apply E_Seq with (Y !-> 3; X !-> 1; Y !-> 2; Y !-> 0; X !-> 2) ;apply E_Ass ; try reflexivity. 
+    * apply E_WhileFalse. reflexivity.
+Qed.
 (** [] *)
 
 (* ================================================================= *)
@@ -1583,6 +1634,8 @@ Proof.
     Foundations_, but we can get some distance just working with the
     bare definitions.  This section explores some examples. *)
 
+Print plus2.
+
 Theorem plus2_spec : forall st n st',
   st X = n ->
   st =[ plus2 ]=> st' ->
@@ -1602,6 +1655,21 @@ Proof.
 
     State and prove a specification of [XtimesYinZ]. *)
 
+Set Printing Notations. Set Printing Coercions.
+
+Print XtimesYinZ.
+Print t_update_eq.
+
+
+Theorem XtimesYinZ_spec : forall st n1 n2 st',
+  st X = n1 ->
+  st Y = n2 ->
+  st =[ XtimesYinZ ]=> st' ->
+  st' Z = n1 * n2.
+Proof.
+  intros.
+  inversion H1. subst. simpl. apply t_update_eq.
+Qed.
 (* FILL IN HERE *)
 
 (* Do not modify the following line: *)
@@ -1621,7 +1689,10 @@ Proof.
       contradictory (and so can be solved in one step with
       [discriminate]). *)
 
-  (* FILL IN HERE *) Admitted.
+  induction contra ; try discriminate.
+  - injection Heqloopdef. intros. rewrite H1 in H. simpl in H. discriminate.
+  - apply IHcontra2 in Heqloopdef. inversion Heqloopdef.    
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, standard (no_whiles_eqv) 
@@ -1648,13 +1719,32 @@ Fixpoint no_whiles (c : com) : bool :=
     while loops.  Then prove its equivalence with [no_whiles]. *)
 
 Inductive no_whilesR: com -> Prop :=
- (* FILL IN HERE *)
+  NW_Skip : no_whilesR <{ skip }>
+  | NW_Ass X Y: no_whilesR <{ X := Y }>
+  | NW_Seq X Y (H1: no_whilesR X) (H: no_whilesR Y) : no_whilesR <{ X ; Y }> 
+  | NW_If X Y C : no_whilesR X -> no_whilesR Y -> no_whilesR <{ if C then X else Y end }>
+  | NW_While a b: 1 + 1 = 3 -> no_whilesR <{ while a do b end }>
 .
+
+Search (_ && _ = true -> _).
 
 Theorem no_whiles_eqv:
    forall c, no_whiles c = true <-> no_whilesR c.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  split ; intros.
+  - induction c ; simpl.
+    + apply NW_Skip.
+    + apply NW_Ass.
+    + apply NW_Seq ;inversion H ; apply andb_prop in H1 ;destruct H1.
+      apply IHc1. apply H0. apply IHc2. apply H1.
+    + apply NW_If ;simpl in H ; apply andb_prop in H; destruct H.
+      apply IHc1. apply H. apply IHc2. apply H0.
+    + apply NW_While. simpl. discriminate.
+  - induction c ; simpl ; try reflexivity.
+    + inversion H. apply IHc1 in H2. apply IHc2 in H3. rewrite H2. rewrite H3. reflexivity.
+    + inversion H. apply IHc1 in H2. apply IHc2 in H4. rewrite H2. rewrite H4. reflexivity.
+    + inversion H. discriminate.   
+Qed.
 (** [] *)
 
 (** **** Exercise: 4 stars, standard (no_whiles_terminating) 
@@ -1662,9 +1752,25 @@ Proof.
     Imp programs that don't involve while loops always terminate.
     State and prove a theorem [no_whiles_terminating] that says this.
 
-    Use either [no_whiles] or [no_whilesR], as you prefer. *)
+    Use either [no_whiles] or [no_whilesR], as you prefer. *) 
 
-(* FILL IN HERE *)
+Theorem no_whiles_terminating:
+  forall c st, no_whilesR c -> (exists st',  st =[ c ]=> st').
+Proof.
+  intros. generalize dependent st. induction c. 
+  - intros. exists st. apply E_Skip.
+  - intros. exists (x !-> (aeval st a) ; st). apply E_Ass. reflexivity.
+  - intros. inversion H. subst. apply IHc1 with st in H2. destruct H2 as [st'].
+    apply IHc2 with st' in H3. destruct H3 as [st'']. exists st''.
+    apply E_Seq with st'. assumption. assumption.
+  - intros. inversion H. subst. apply IHc1 with st in H2. destruct H2 as [st'].
+    apply IHc2 with st in H4. destruct H4 as [st''].
+    remember (beval st b).
+    destruct (beval st b) eqn: H2.
+    + exists st'. apply (E_IfTrue st st' b c1 c2). assumption. assumption.
+    + exists st''. apply (E_IfFalse st st'' b c1 c2). assumption. assumption.
+  - intros. inversion H. discriminate.
+Qed.
 
 (* Do not modify the following line: *)
 Definition manual_grade_for_no_whiles_terminating : option (nat*string) := None.

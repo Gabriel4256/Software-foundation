@@ -103,18 +103,29 @@ Proof.
     Show that the [total_relation] defined in (an exercise in)
     [IndProp] is not a partial function. *)
 
-(* FILL IN HERE
-
-    [] *)
+Theorem total_relation_not_a_partial_function :
+  ~ (partial_function total_relation).
+Proof.
+  unfold not. unfold partial_function.
+  intros. assert (0 = 1) as Nonsense. {
+    apply (H 0 0 1).
+    - apply tr.
+    - apply tr.
+  }
+  discriminate Nonsense.
+Qed.
 
 (** **** Exercise: 2 stars, standard, optional (empty_relation_partial) 
 
     Show that the [empty_relation] defined in (an exercise in)
     [IndProp] is a partial function. *)
 
-(* FILL IN HERE
-
-    [] *)
+Theorem empty_relation_not_a_partial_function :
+  (partial_function empty_relation).
+Proof.
+  unfold not. unfold partial_function. intros. inversion H.
+  discriminate H1.
+Qed.
 
 (* ----------------------------------------------------------------- *)
 (** *** Reflexive Relations *)
@@ -162,6 +173,8 @@ Proof.
     We can also prove [lt_trans] more laboriously by induction,
     without using [le_trans].  Do this. *)
 
+Search (S _ <= _ -> _ <= _).
+
 Theorem lt_trans' :
   transitive lt.
 Proof.
@@ -169,12 +182,16 @@ Proof.
   unfold lt. unfold transitive.
   intros n m o Hnm Hmo.
   induction Hmo as [| m' Hm'o].
-    (* FILL IN HERE *) Admitted.
+  - apply le_n_S. apply Le.le_Sn_le. apply Hnm.
+  - apply le_n_S. apply Le.le_Sn_le. apply IHHm'o.
 (** [] *)
+Qed.
 
 (** **** Exercise: 2 stars, standard, optional (lt_trans'') 
 
     Prove the same thing again by induction on [o]. *)
+
+Search (_ <= _ -> _ <= _ -> _).
 
 Theorem lt_trans'' :
   transitive lt.
@@ -182,7 +199,10 @@ Proof.
   unfold lt. unfold transitive.
   intros n m o Hnm Hmo.
   induction o as [| o'].
-  (* FILL IN HERE *) Admitted.
+  - inversion Hmo.
+  - apply le_S in Hnm. apply (le_trans (S n) (S m) (S o')).
+    apply Hnm. apply Hmo.
+Qed.
 (** [] *)
 
 (** The transitivity of [le], in turn, can be used to prove some facts
@@ -200,7 +220,10 @@ Qed.
 Theorem le_S_n : forall n m,
   (S n <= S m) -> (n <= m).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. destruct n.
+  + apply le_0_n.
+  + apply le_S_n in H. apply H. 
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, standard, optional (le_Sn_n_inf) 
@@ -221,7 +244,10 @@ Proof.
 Theorem le_Sn_n : forall n,
   ~ (S n <= n).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  unfold not. intros. induction n.
+  + inversion H.
+  + apply le_S_n in H. apply IHn in H. apply H.
+Qed.
 (** [] *)
 
 (** Reflexivity and transitivity are the main concepts we'll need for
@@ -240,7 +266,10 @@ Definition symmetric {X: Type} (R: relation X) :=
 Theorem le_not_symmetric :
   ~ (symmetric le).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  unfold not. intros. unfold symmetric in H.
+  assert (1 <= 0) as Nonsense. { apply H. apply le_S. reflexivity. }
+  inversion Nonsense. 
+Qed.
 (** [] *)
 
 (** A relation [R] is _antisymmetric_ if [R a b] and [R b a] together
@@ -254,7 +283,13 @@ Definition antisymmetric {X: Type} (R: relation X) :=
 Theorem le_antisymmetric :
   antisymmetric le.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  unfold antisymmetric.
+  intros a b H.
+  induction H.
+  - intros. reflexivity.
+  - intros. apply le_S in H0 as H2. apply le_S_n in H2. apply IHle in H2.
+    rewrite H2 in H0. apply le_Sn_n in H0. inversion H0. 
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, standard, optional (le_step)  *)
@@ -263,7 +298,10 @@ Theorem le_step : forall n m p,
   m <= S p ->
   n <= p.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. induction H.
+  - apply le_S_n. apply H0.
+  - apply IHle. apply le_S. apply le_S_n. apply H0.
+Qed.
 (** [] *)
 
 (* ----------------------------------------------------------------- *)
@@ -379,7 +417,11 @@ Lemma rsc_trans :
       clos_refl_trans_1n R y z ->
       clos_refl_trans_1n R x z.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. generalize dependent H0.
+  induction H as [|a b c Rab H1 H2].
+  - intros. apply H0. 
+  - intros. apply rt1n_trans with b. apply Rab. apply H2. apply H0. 
+Qed.
 (** [] *)
 
 (** Then we use these facts to prove that the two definitions of
@@ -391,7 +433,15 @@ Theorem rtc_rsc_coincide :
          forall (X:Type) (R: relation X) (x y : X),
   clos_refl_trans R x y <-> clos_refl_trans_1n R x y.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  split.
+  - intros. induction H.
+    + apply rsc_R. apply H.
+    + apply rt1n_refl.
+    + apply (rsc_trans X R x y z). apply IHclos_refl_trans1. apply IHclos_refl_trans2.  
+  - intros. induction H.
+    + apply rt_refl.
+    + apply rt_step in Hxy. apply (rt_trans R x y z). apply Hxy. apply IHclos_refl_trans_1n.   
+Qed.
 (** [] *)
 
 (* 2020-08-24 15:39 *)

@@ -843,10 +843,10 @@ R25697:25697 LF.AltAuto <> b:80 var
 R25699:25699 LF.AltAuto <> c:81 var
 R25792:25793 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
 R25795:25795 Coq.Init.Peano <> ::nat_scope:x_'*'_x not
-R25776:25783 LF.IndProp <> le_trans prfax
+R25776:25783 LF.IndProp <> le_trans thm
 R25792:25793 Coq.Init.Peano <> ::nat_scope:x_'+'_x not
 R25795:25795 Coq.Init.Peano <> ::nat_scope:x_'*'_x not
-R25776:25783 LF.IndProp <> le_trans prfax
+R25776:25783 LF.IndProp <> le_trans thm
 R25888:25896 LF.Induction <> mult_comm thm
 R25888:25896 LF.Induction <> mult_comm thm
 R25888:25896 LF.Induction <> mult_comm thm
@@ -874,8 +874,8 @@ R26756:26756 LF.AltAuto <> b:84 var
 R26761:26761 Coq.Init.Peano <> ::nat_scope:x_'*'_x not
 R26760:26760 LF.AltAuto <> b:84 var
 R26762:26762 LF.AltAuto <> c:85 var
-R26840:26847 LF.IndProp <> le_trans prfax
-R26840:26847 LF.IndProp <> le_trans prfax
+R26840:26847 LF.IndProp <> le_trans thm
+R26840:26847 LF.IndProp <> le_trans thm
 R26907:26915 LF.Induction <> mult_comm thm
 R26907:26915 LF.Induction <> mult_comm thm
 R26907:26915 LF.Induction <> mult_comm thm
@@ -903,5 +903,5 @@ R27923:27923 LF.AltAuto <> b:88 var
 R27928:27928 Coq.Init.Peano <> ::nat_scope:x_'*'_x not
 R27927:27927 LF.AltAuto <> b:88 var
 R27929:27929 LF.AltAuto <> c:89 var
-R28017:28024 LF.IndProp <> le_trans prfax
-R28017:28024 LF.IndProp <> le_trans prfax
+R28017:28024 LF.IndProp <> le_trans thm
+R28017:28024 LF.IndProp <> le_trans thm

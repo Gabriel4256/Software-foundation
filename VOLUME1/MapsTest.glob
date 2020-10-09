@@ -14,7 +14,7 @@ R678:682 LF.MapsTest Check <> mod
 R709:712 LF.Maps <> <> lib
 def 730:738 <> Unnamed_thm
 R735:738 Coq.Init.Logic <> True ind
-R886:898 LF.Maps <> t_update_same prfax
+R886:898 LF.Maps <> t_update_same thm
 binder 911:911 <> A:2
 R926:934 LF.Maps <> total_map def
 R936:936 LF.MapsTest <> A:2 var
@@ -30,7 +30,7 @@ R954:954 LF.MapsTest <> x:4 var
 R960:960 LF.MapsTest <> m:3 var
 R962:962 LF.MapsTest <> x:4 var
 R970:970 LF.MapsTest <> m:3 var
-R886:898 LF.Maps <> t_update_same prfax
+R886:898 LF.Maps <> t_update_same thm
 binder 911:911 <> A:5
 R926:934 LF.Maps <> total_map def
 R936:936 LF.MapsTest <> A:5 var
@@ -46,10 +46,10 @@ R954:954 LF.MapsTest <> x:7 var
 R960:960 LF.MapsTest <> m:6 var
 R962:962 LF.MapsTest <> x:7 var
 R970:970 LF.MapsTest <> m:6 var
-R1022:1034 LF.Maps <> t_update_same prfax
+R1022:1034 LF.Maps <> t_update_same thm
 def 1037:1045 <> Unnamed_thm
 R1042:1045 Coq.Init.Logic <> True ind
-R1210:1225 LF.Maps <> t_update_permute prfax
+R1210:1225 LF.Maps <> t_update_permute thm
 binder 1238:1238 <> A:8
 R1253:1261 LF.Maps <> total_map def
 R1263:1263 LF.MapsTest <> A:8 var
@@ -85,7 +85,7 @@ R1345:1346 LF.MapsTest <> v2:11 var
 R1299:1302 Coq.Init.Logic <> ::type_scope:x_'<>'_x not
 R1297:1298 LF.MapsTest <> x2:13 var
 R1303:1304 LF.MapsTest <> x1:12 var
-R1210:1225 LF.Maps <> t_update_permute prfax
+R1210:1225 LF.Maps <> t_update_permute thm
 binder 1238:1238 <> A:14
 R1253:1261 LF.Maps <> total_map def
 R1263:1263 LF.MapsTest <> A:14 var
@@ -121,8 +121,8 @@ R1345:1346 LF.MapsTest <> v2:17 var
 R1299:1302 Coq.Init.Logic <> ::type_scope:x_'<>'_x not
 R1297:1298 LF.MapsTest <> x2:19 var
 R1303:1304 LF.MapsTest <> x1:18 var
-R1413:1428 LF.Maps <> t_update_permute prfax
+R1413:1428 LF.Maps <> t_update_permute thm
 def 1431:1439 <> Unnamed_thm
 R1436:1439 Coq.Init.Logic <> True ind
-R2293:2305 LF.Maps <> t_update_same prfax
-R2373:2388 LF.Maps <> t_update_permute prfax
+R2293:2305 LF.Maps <> t_update_same thm
+R2373:2388 LF.Maps <> t_update_permute thm

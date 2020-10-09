@@ -1561,8 +1561,8 @@ R56740:56742 Coq.Init.Logic <> ::type_scope:x_'='_x not
 R56736:56737 LF.Imp <> st:241 var
 R56739:56739 LF.Imp <> X def
 R56743:56743 LF.Imp <> n:242 var
-R57113:57123 LF.Maps <> t_update_eq prfax
-R57113:57123 LF.Maps <> t_update_eq prfax
+R57113:57123 LF.Maps <> t_update_eq thm
+R57113:57123 LF.Maps <> t_update_eq thm
 def 57328:57359 <> manual_grade_for_XtimesYinZ_spec
 R57363:57368 Coq.Init.Datatypes <> option ind
 R57374:57374 Coq.Init.Datatypes <> ::type_scope:x_'*'_x not
