@@ -436,7 +436,31 @@ Qed.
 Lemma re_opt_match' : forall T (re: reg_exp T) s,
     s =~ re -> s =~ re_opt re.
 Proof.
-(* FILL IN HERE *) Admitted.
+  intros T re s M.
+  induction M
+    as [| x'
+        | s1 re1 s2 re2 Hmatch1 IH1 Hmatch2 IH2
+        | s1 re1 re2 Hmatch IH | re1 s2 re2 Hmatch IH
+        | re | s1 s2 re Hmatch1 IH1 Hmatch2 IH2] ;
+    simpl ; try apply MEmpty ; try apply MChar.
+  - destruct re1 ; [inversion IH1 | inversion IH1 ; simpl | .. ] ;
+    destruct re2 ; try (apply IH2) ; 
+    try (apply MApp ; [ apply IH1 | apply IH2 ] ) ;
+    inversion IH2 ; rewrite app_nil_r ; apply IH1.
+  - destruct re1 ; destruct re2 ; try (apply IH) ; 
+    try (apply MUnionL ;  apply IH) ;
+    inversion IH.
+  - destruct re1 ; 
+    try apply IH ; 
+    destruct re2 ; 
+    try (apply MUnionR; apply IH) ;
+    inversion IH.
+ -  destruct re ; try apply MEmpty ; 
+    try apply MStar0 ;
+    destruct re ; apply MStar0. 
+ - destruct re ; try (apply star_app ; try (apply MStar1 ; apply IH1) ; apply IH2) ;
+   inversion IH1 ; inversion IH2 ; apply MEmpty.
+Qed.
 (* Do not modify the following line: *)
 Definition manual_grade_for_re_opt : option (nat*string) := None.
 (** [] *)
@@ -737,7 +761,43 @@ Lemma weak_pumping : forall T (re : reg_exp T) s,
     s2 <> [] /\
     forall m, s1 ++ napp m s2 ++ s3 =~ re.
 Proof.
-(* FILL IN HERE *) Admitted.
+  intros T re s Hmatch.
+  induction Hmatch
+    as [ | x | s1 re1 s2 re2 Hmatch1 IH1 Hmatch2 IH2
+       | s1 re1 re2 Hmatch IH | re1 s2 re2 Hmatch IH
+       | re | s1 s2 re Hmatch1 IH1 Hmatch2 IH2 ] ; simpl ;intros ; 
+  try (destruct H ; destruct H; destruct H; destruct H).
+  - (* MEmpty *)
+    inversion H.
+  - lia. 
+  - rewrite app_length in H. apply add_le_cases in H ; destruct H;
+    [apply IH1 in H as H | apply IH2 in H as H]; destruct H ; destruct H ; destruct H ; destruct H.  
+    + exists x , x0, (x1 ++ s2). rewrite H. split.
+      * apply app_assoc_three.
+      * destruct H0. split. auto. intros.
+        intros. apply (MApp (x ++ napp m x0 ++ x1) re1 (s2) re2) in H1.
+        rewrite app_assoc_three in H1. auto. auto.
+    + exists (s1 ++ x), x0, x1. split.
+      * rewrite <- app_assoc. rewrite H. reflexivity.
+      * destruct H0. split. auto. intros. rewrite <- app_assoc. 
+        eapply (MApp s1 re1 (x ++ napp m x0 ++ x1) re2) in H1. auto. auto.
+  - apply weak_pumping_helper in H. apply IH in H. destruct H. destruct H.
+    destruct H. destruct H. destruct H0. 
+    exists x, x0, x1. split. auto. split. auto. intros. apply MUnion'. left. auto.
+  - rewrite plus_comm in H. apply weak_pumping_helper in H. apply IH in H.
+    destruct H. destruct H. destruct H. destruct H. destruct H0. exists x. exists x0. exists x1.
+    split.
+    + apply H.
+    + split. apply H0. intros. apply MUnion'. right. apply H1.
+  - simpl. intros. inversion H. apply pumping_constant_0_false in H1. inversion H1. 
+  - simpl. intros. simpl in H. rewrite app_length in H. simpl in IH2. 
+    (* exists []. exists s1. exists s2. split. reflexivity. destruct s1. *)
+    destruct s1.
+    + simpl in H. apply IH2 in H. destruct H. destruct H. destruct H. destruct H. destruct H0.
+      exists x. exists x0. exists x1. split. simpl. apply H. split. apply H0. apply H1.
+    + exists []. exists (x::s1). exists s2. split. reflexivity. split. unfold not. discriminate.
+      intros. apply napp_star. apply Hmatch1. apply Hmatch2. 
+Qed.
 (* Do not modify the following line: *)
 Definition manual_grade_for_pumping_redux : option (nat*string) := None.
 (** [] *)
