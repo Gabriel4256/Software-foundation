@@ -263,15 +263,15 @@ These decorations were constructed as follows:
 
        {{ True }}
       if X <= Y then
-          {{                         }} ->>
-          {{                         }}
+          {{  True /\ X <= Y         }} ->>
+          {{  Y = X + (Y - X)                       }}
         Z := Y - X
-          {{                         }}
+          {{  Y = X + Z                       }}
       else
-          {{                         }} ->>
-          {{                         }}
+          {{  True /\ ~ ( X <= Y)         }} ->>
+          {{  X + Z = X + Z                       }}
         Y := X + Z
-          {{                         }}
+          {{  Y = X + Z                       }}
       end
         {{ Y = X + Z }}
 
@@ -670,10 +670,16 @@ Qed.
 
         {{ X = m }}
       Y := 0;
+        {{ X = m /\ Y = 0}} ->> {{ X + Y = m }}
       while ~(X = 0) do
+        {{ X + Y = m /\ ~ (X = 0) }} ->>
+        {{ (X - 1) + (Y + 1) = m }}
         X := X - 1;
+        {{ X + (Y + 1) = m}}
         Y := Y + 1
+        {{ X + Y = m }}
       end
+        {{ X = m }} ->>
         {{ Y = m }}
 
     Write an informal decorated program showing that this procedure
@@ -800,7 +806,21 @@ Theorem parity_correct : forall (m:nat),
   end
   {{  X = parity m }}.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros.
+  apply hoare_consequence_pre with (fun st => (parity (st X) = parity m)).
+  eapply hoare_consequence_post. 
+  - apply hoare_while. eapply hoare_consequence_pre.
+    + apply hoare_asgn.
+    + verify_assn. destruct (st X).
+      * inversion H0.
+      * destruct n. 
+        { discriminate.
+        } assert (S (S n) >=2). { lia. }
+        rewrite <- H. apply parity_ge_2. auto.
+  - verify_assn. destruct (st X). auto.
+    destruct n. auto. discriminate.
+  - verify_assn.
+Qed.
 (** [] *)
 
 (* ================================================================= *)
@@ -952,7 +972,7 @@ Proof.
     of the number initially stored in the variable [X] and puts it in
     the variable [Y]:
 
-    {{ X = m }}
+    {{ X = m }} ->> 
   Y := 1 ;
   while ~(X = 0)
   do
@@ -967,18 +987,18 @@ Proof.
     Excluding both operations from your loop invariant is advisable.
 
     {{ X = m }} ->>
-    {{                                      }}
+    {{  1 * X! = m!  }}
   Y := 1;
-    {{                                      }}
+    {{    Y * X! = m!  }}
   while ~(X = 0)
-  do   {{                                      }} ->>
-       {{                                      }}
+  do   {{  Y * X! = m! /\ ~ (X = 0)  }} ->>
+       {{ (Y * X) * (X - 1)! = m! }}
      Y := Y * X;
-       {{                                      }}
+       {{ Y * (X -1)! = m!  }}
      X := X - 1
-       {{                                      }}
+       {{ Y * X! = m! }}
   end
-    {{                                      }} ->>
+    {{  Y x X! = m!  /\ X = 0}} ->>
     {{ Y = m! }}
 
     Briefly justify each use of [->>].
@@ -1009,24 +1029,24 @@ Definition manual_grade_for_decorations_in_factorial : option (nat*string) := No
 (**
 
   {{ True }} ->>
-  {{                    }}
+  {{ min (a, b) + 0 = min (a, b) }}
   X := a;
-  {{                       }}
+  {{ min (X, b) + 0 = min (a, b)  }}
   Y := b;
-  {{                       }}
+  {{  min (X, Y) + 0 = min (a, b) }}
   Z := 0;
-  {{                       }}
+  {{  min (X, Y) + Z = min (a, b) }}
   while ~(X = 0) && ~(Y = 0) do
-    {{                                     }} ->>
-    {{                                }}
+    {{ min (X, Y) + Z = min (a, b) /\ ~(X = 0) /\ ~(Y = 0) }} ->>
+    {{ min (X-1, Y-1) + (Z + 1) = min (a, b) }}
     X := X - 1;
-    {{                            }}
+    {{ min (X, Y-1) + (Z + 1) = min (a, b)}}
     Y := Y - 1;
-    {{                        }}
+    {{ min (X, Y) + (Z + 1) = min (a, b)}}
     Z := Z + 1
-    {{                       }}
+    {{ min (X, Y) + Z = min (a,b)  }}
   end
-  {{                            }} ->>
+  {{ min (X, Y) + Z = min (a, b) /\ (X = 0) \/ (Y = 0) }} ->>
   {{ Z = min a b }}
 *)
 
@@ -1199,7 +1219,17 @@ Definition is_wp P c Q :=
 Theorem is_wp_example :
   is_wp (Y <= 4) <{X := Y + 1}> (X <= 5).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  unfold is_wp. split.
+  - unfold hoare_triple. intros.
+    inversion H. subst. simpl. unfold t_update. simpl.
+    simpl in H0. lia.
+  - intros. unfold "->>". intros. unfold hoare_triple in H.
+    specialize H with (st := st) (st' := (X !-> (st Y) + 1 ; st)).
+    assert (st Y + 1 <= 5). {
+      apply H. constructor. reflexivity. apply H0.
+    }
+    simpl. lia.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, advanced, optional (hoare_asgn_weakest) 
@@ -1210,7 +1240,15 @@ Proof.
 Theorem hoare_asgn_weakest : forall Q X a,
   is_wp (Q [X |-> a]) <{ X := a }> Q.
 Proof.
-(* FILL IN HERE *) Admitted.
+  unfold is_wp. intros.
+  split.
+  - apply hoare_asgn.
+  - intros. unfold "->>". intros.
+    unfold hoare_triple in H. 
+    unfold assn_sub. 
+    specialize H with (st := st) (st' := (X !-> aeval st a ; st)).
+    apply H. constructor. reflexivity. auto.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, advanced, optional (hoare_havoc_weakest) 
@@ -1224,7 +1262,12 @@ Lemma hoare_havoc_weakest : forall (P Q : Assertion) (X : string),
   {{ P }} havoc X {{ Q }} ->
   P ->> havoc_pre X Q.
 Proof.
-(* FILL IN HERE *) Admitted.
+  intros. unfold "->>". intros. 
+  unfold hoare_triple in H.
+  unfold havoc_pre. 
+  intros. specialize H with (st := st) (st' := (X !-> x; st)).
+  apply H. constructor. auto.
+Qed.
 End Himp2.
 (** [] *)
 
@@ -1363,6 +1406,7 @@ Example dec0 :=
 Example dec1 :=
   <{ while true do {{ True }} skip {{ True }} end
   {{ True }} }>.
+
 
 (** Recall that you can [Set Printing All] to see how all that
     notation is desugared. *)
@@ -2025,16 +2069,33 @@ becomes
     {{ X = m /\ Y = 0 }} ;;
 *)
 
-Example slow_assignment_dec (m : nat) : decorated
-  (* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Example slow_assignment_dec (m : nat) : decorated :=
+  <{
+    {{ X = m }} ->> {{ X + 0  = m}}
+    Y := 0
+    {{ X + Y = m }};
+    while ~(X = 0) do
+    {{ X + Y = m /\ ~ (X = 0) }} ->>
+    {{ (X -1) + (Y + 1) = m }}
+      X := X - 1
+    {{ X + (Y + 1) = m }}; 
+      Y := Y + 1
+      {{ X + Y = m }}
+    end
+      {{ X + Y = m /\ X = 0 }} ->>
+      {{ Y = m }}
+  }>.
+
+
 
 (** Now prove the correctness of your decorated program.  If all goes well,
     you will need only [verify]. *)
 
 Theorem slow_assignment_dec_correct : forall m,
   dec_correct (slow_assignment_dec m).
-Proof. (* FILL IN HERE *) Admitted.
-
+Proof. 
+  verify.
+Qed.
 (* Do not modify the following line: *)
 Definition manual_grade_for_check_defn_of_slow_assignment_dec : option (nat*string) := None.
 (** [] *)
@@ -2072,6 +2133,44 @@ Compute fact 5. (* ==> 120 *)
 
 (* FILL IN HERE *)
 
+
+Example factorial_dec (m: nat): decorated :=
+  <{
+    {{ X = m }} ->> {{fun st => fact (st X) * 1 = fact m }}
+    Y := 1
+    {{fun st => st Y * fact (st X) = fact m }} ;
+    while ~(X = 0)
+    do
+      {{fun st => st Y * fact (st X) = fact m /\ ~(st X = 0) }} ->>
+      {{fun st => (st Y * st X) * fact (st X - 1) = fact m }} 
+      Y := Y * X
+      {{fun st => st Y * fact (st X-1) = fact m }};
+      X := X - 1
+      {{fun st => st Y * fact (st X) = fact m }}
+    end
+    {{fun st => st Y * fact (st X) = fact m /\ st X = 0 }} ->>
+    {{ Y = fact m }} 
+  }>.
+
+Theorem factorial_dec_correct: forall m,
+  dec_correct (factorial_dec m)
+.
+Proof.
+ verify.
+  Search fact.
+ - rewrite <- H. destruct (st X).
+  + destruct H0. reflexivity.
+  + assert (forall n, n <> 0 -> fact n = n * fact(n-1)).
+    {
+     intros. destruct n0. destruct H1. reflexivity.
+     simpl. rewrite sub_0_r. reflexivity.
+    }
+    specialize H1 with (S n). apply H1 in H0. rewrite H0. simpl. 
+    rewrite sub_0_r. lia.
+ - simpl in H. lia.  
+Qed.
+
+
 (* Do not modify the following line: *)
 Definition manual_grade_for_factorial_dec : option (nat*string) := None.
 (** [] *)
@@ -2106,7 +2205,12 @@ Lemma fib_eqn : forall n,
   n > 0 ->
   fib n + fib (pred n) = fib (1 + n).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. induction n.
+  - inversion H.
+  - destruct n.
+    + simpl. reflexivity.
+    + simpl. reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 4 stars, advanced, optional (fib) 
@@ -2135,12 +2239,41 @@ Proof.
 
 Definition T : string := "T".
 
-Definition dfib (n : nat) : decorated
-(* REPLACE THIS LINE WITH ":= _your_definition_ ." *). Admitted.
+Definition dfib (n : nat) : decorated :=
+  <{
+    {{ True }} ->>
+    {{ 1 =  ap fib (1 - 1) /\ 1 = ap fib 1 /\ 1 >= 1}}
+    X := 1
+    {{ 1 = ap fib (X - 1) /\ 1 = ap fib X /\ X >= 1}};
+    Y := 1
+    {{ Y = ap fib (X - 1) /\ 1 = ap fib X /\ X >= 1}};
+    Z := 1
+    {{ Y = ap fib (X - 1) /\ Z = ap fib X /\ X >= 1}};
+    while ~ (X = 1 + n) do
+      {{ Y = ap fib (X - 1) /\  Z = ap fib X /\ X >= 1 /\ ~ (X = 1 + n) }} ->>
+      {{ Z = ap fib ((1 + X) - 1) /\ Z + Y =  ap fib (1 + X) /\ 1 + X >= 1}} 
+      T := Z
+      {{ T = ap fib ((1 + X)  - 1) /\ Z + Y = ap fib (1 + X) /\ 1 + X >= 1}};
+      Z := Z + Y
+      {{ T = ap fib ((1 + X)  - 1) /\ Z = ap fib (1 + X) /\ 1 + X >= 1}};
+      Y := T
+      {{ Y = ap fib ((1 + X)  - 1) /\ Z = ap fib (1 + X) /\ 1 + X >= 1}};
+      X := 1 + X
+      {{ Y = ap fib (X - 1) /\ Z = ap fib X /\ X >= 1 }}
+    end
+    {{ Y = ap fib (X - 1) /\ Z = ap fib (X) /\ X >= 1  /\ X = 1 + n }} ->>
+      {{ Y = ap fib n }}
+  }>
+.
 
 Theorem dfib_correct : forall n,
   dec_correct (dfib n).
-(* FILL IN HERE *) Admitted.
+Proof.
+  assert (forall n, S n - 1 = n) by lia.
+  verify.
+  - destruct (st X) eqn:H4. inversion H2.
+    assert ( S n0 - 1 = n0) by lia. rewrite H0. reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 5 stars, advanced, optional (improve_dcom) 

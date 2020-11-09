@@ -14,28 +14,28 @@ R677:681 LF.ImpTest Check <> mod
 R708:710 LF.Imp <> <> lib
 def 728:736 <> Unnamed_thm
 R733:736 Coq.Init.Logic <> True ind
-R907:933 LF.Imp AExp optimize_0plus_b_sound prfax
+R907:933 LF.Imp AExp optimize_0plus_b_sound thm
 R949:957 LF.Imp AExp bexp ind
 binder 945:945 <> b:2
 R996:998 Coq.Init.Logic <> ::type_scope:x_'='_x not
 R960:969 LF.Imp AExp beval def
-R972:992 LF.Imp AExp optimize_0plus_b prfax
+R972:992 LF.Imp AExp optimize_0plus_b def
 R994:994 LF.ImpTest <> b:2 var
 R999:1008 LF.Imp AExp beval def
 R1010:1010 LF.ImpTest <> b:2 var
-R907:933 LF.Imp AExp optimize_0plus_b_sound prfax
+R907:933 LF.Imp AExp optimize_0plus_b_sound thm
 R949:957 LF.Imp AExp bexp ind
 binder 945:945 <> b:3
 R996:998 Coq.Init.Logic <> ::type_scope:x_'='_x not
 R960:969 LF.Imp AExp beval def
-R972:992 LF.Imp AExp optimize_0plus_b prfax
+R972:992 LF.Imp AExp optimize_0plus_b def
 R994:994 LF.ImpTest <> b:3 var
 R999:1008 LF.Imp AExp beval def
 R1010:1010 LF.ImpTest <> b:3 var
-R1062:1088 LF.Imp AExp optimize_0plus_b_sound prfax
+R1062:1088 LF.Imp AExp optimize_0plus_b_sound thm
 def 1091:1099 <> Unnamed_thm
 R1096:1099 Coq.Init.Logic <> True ind
-R1259:1279 LF.Imp AExp beval_iff_bevalR prfax
+R1259:1279 LF.Imp AExp beval_iff_bevalR thm
 R1296:1304 LF.Imp AExp bexp ind
 binder 1292:1292 <> b:4
 R1313:1316 Coq.Init.Datatypes <> bool ind
@@ -48,7 +48,7 @@ R1353:1355 Coq.Init.Logic <> ::type_scope:x_'='_x not
 R1341:1350 LF.Imp AExp beval def
 R1352:1352 LF.ImpTest <> b:4 var
 R1356:1357 LF.ImpTest <> bv:5 var
-R1259:1279 LF.Imp AExp beval_iff_bevalR prfax
+R1259:1279 LF.Imp AExp beval_iff_bevalR thm
 R1296:1304 LF.Imp AExp bexp ind
 binder 1292:1292 <> b:6
 R1313:1316 Coq.Init.Datatypes <> bool ind
@@ -61,10 +61,10 @@ R1353:1355 Coq.Init.Logic <> ::type_scope:x_'='_x not
 R1341:1350 LF.Imp AExp beval def
 R1352:1352 LF.ImpTest <> b:6 var
 R1356:1357 LF.ImpTest <> bv:7 var
-R1409:1429 LF.Imp AExp beval_iff_bevalR prfax
+R1409:1429 LF.Imp AExp beval_iff_bevalR thm
 def 1432:1440 <> Unnamed_thm
 R1437:1440 Coq.Init.Logic <> True ind
-R1601:1614 LF.Imp <> ceval_example2 prfax
+R1601:1614 LF.Imp <> ceval_example2 ex
 R1627:1630 LF.Imp <> :::x_'=['_x_']=>'_x not
 R1674:1679 LF.Imp <> :::x_'=['_x_']=>'_x not
 R1644:1645 LF.Imp <> :com:com_scope:x_';'_x not
@@ -96,7 +96,7 @@ R1721:1725 LF.Imp <> :::x_'!->'_x not
 R1720:1720 LF.Imp <> X def
 R1715:1717 Coq.Init.Datatypes <> nat ind
 R1695:1697 Coq.Init.Datatypes <> nat ind
-R1601:1614 LF.Imp <> ceval_example2 prfax
+R1601:1614 LF.Imp <> ceval_example2 ex
 R1627:1630 LF.Imp <> :::x_'=['_x_']=>'_x not
 R1674:1679 LF.Imp <> :::x_'=['_x_']=>'_x not
 R1644:1645 LF.Imp <> :com:com_scope:x_';'_x not
@@ -128,10 +128,10 @@ R1721:1725 LF.Imp <> :::x_'!->'_x not
 R1720:1720 LF.Imp <> X def
 R1715:1717 Coq.Init.Datatypes <> nat ind
 R1695:1697 Coq.Init.Datatypes <> nat ind
-R1788:1801 LF.Imp <> ceval_example2 prfax
+R1788:1801 LF.Imp <> ceval_example2 ex
 def 1804:1812 <> Unnamed_thm
 R1809:1812 Coq.Init.Logic <> True ind
-R1977:1992 LF.Imp <> loop_never_stops prfax
+R1977:1992 LF.Imp <> loop_never_stops thm
 R2012:2016 LF.Imp <> state def
 binder 2003:2004 <> st:8
 binder 2006:2008 <> st':9
@@ -141,7 +141,7 @@ R2031:2035 LF.Imp <> :::x_'=['_x_']=>'_x not
 R2027:2030 LF.Imp <> loop def
 R2021:2022 LF.ImpTest <> st:8 var
 R2036:2038 LF.ImpTest <> st':9 var
-R1977:1992 LF.Imp <> loop_never_stops prfax
+R1977:1992 LF.Imp <> loop_never_stops thm
 R2012:2016 LF.Imp <> state def
 binder 2003:2004 <> st:10
 binder 2006:2008 <> st':11
@@ -151,10 +151,10 @@ R2031:2035 LF.Imp <> :::x_'=['_x_']=>'_x not
 R2027:2030 LF.Imp <> loop def
 R2021:2022 LF.ImpTest <> st:10 var
 R2036:2038 LF.ImpTest <> st':11 var
-R2090:2105 LF.Imp <> loop_never_stops prfax
+R2090:2105 LF.Imp <> loop_never_stops thm
 def 2108:2116 <> Unnamed_thm
 R2113:2116 Coq.Init.Logic <> True ind
-R2275:2287 LF.Imp <> no_whiles_eqv prfax
+R2275:2287 LF.Imp <> no_whiles_eqv thm
 R2302:2304 LF.Imp <> com ind
 binder 2298:2298 <> c:12
 R2325:2329 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
@@ -164,7 +164,7 @@ R2317:2317 LF.ImpTest <> c:12 var
 R2321:2324 LF.Imp <> :::'true' not
 R2330:2339 LF.Imp <> no_whilesR ind
 R2341:2341 LF.ImpTest <> c:12 var
-R2275:2287 LF.Imp <> no_whiles_eqv prfax
+R2275:2287 LF.Imp <> no_whiles_eqv thm
 R2302:2304 LF.Imp <> com ind
 binder 2298:2298 <> c:13
 R2325:2329 Coq.Init.Logic <> ::type_scope:x_'<->'_x not
@@ -174,7 +174,7 @@ R2317:2317 LF.ImpTest <> c:13 var
 R2321:2324 LF.Imp <> :::'true' not
 R2330:2339 LF.Imp <> no_whilesR ind
 R2341:2341 LF.ImpTest <> c:13 var
-R2393:2405 LF.Imp <> no_whiles_eqv prfax
+R2393:2405 LF.Imp <> no_whiles_eqv thm
 def 2408:2416 <> Unnamed_thm
 R2413:2416 Coq.Init.Logic <> True ind
 R2615:2652 LF.Imp <> manual_grade_for_no_whiles_terminating def
@@ -619,11 +619,11 @@ R5663:5666 LF.Imp <> :::'true' not
 R5829:5857 LF.Imp BreakImp while_stops_on_break prfax
 def 5860:5868 <> Unnamed_thm
 R5865:5868 Coq.Init.Logic <> True ind
-R6738:6764 LF.Imp AExp optimize_0plus_b_sound prfax
-R6837:6857 LF.Imp AExp beval_iff_bevalR prfax
-R6923:6936 LF.Imp <> ceval_example2 prfax
-R7004:7019 LF.Imp <> loop_never_stops prfax
-R7084:7096 LF.Imp <> no_whiles_eqv prfax
+R6738:6764 LF.Imp AExp optimize_0plus_b_sound thm
+R6837:6857 LF.Imp AExp beval_iff_bevalR thm
+R6923:6936 LF.Imp <> ceval_example2 ex
+R7004:7019 LF.Imp <> loop_never_stops thm
+R7084:7096 LF.Imp <> no_whiles_eqv thm
 R7226:7235 LF.Imp <> s_execute1 prfax
 R7297:7306 LF.Imp <> s_execute2 prfax
 R7368:7377 LF.Imp <> s_compile1 prfax
