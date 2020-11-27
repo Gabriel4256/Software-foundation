@@ -238,7 +238,18 @@ Qed.
 Theorem provable_true_post : forall c P,
     derivable P c True.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  induction c ; intro p.
+  - eapply H_Consequence_pre. constructor.
+    auto.
+  - eapply H_Consequence_pre. constructor.
+    auto.
+  - eapply H_Consequence_pre. eapply H_Seq.
+    apply IHc1. auto. intros. apply H.
+  - eapply H_Consequence_pre. constructor.
+    apply IHc1. apply IHc2. intros. apply H.
+  - eapply H_Consequence. apply H_While.
+    apply IHc. auto. auto.
+Qed.
 
 (** [] *)
 
@@ -250,8 +261,22 @@ Proof.
 Theorem provable_false_pre : forall c Q,
     derivable False c Q.
 Proof.
-  (* FILL IN HERE *) Admitted.
-
+    induction c ; intros.
+    - eapply H_Consequence_post. constructor.
+      intros. inversion H.
+    - eapply H_Consequence_pre. constructor.
+      intros. inversion H.
+    - eapply H_Consequence_pre. eapply H_Seq.
+      apply IHc1. apply IHc2. auto.
+    - eapply H_If. eapply H_Consequence_pre.
+      apply IHc1. intros. destruct H. auto.
+      eapply H_Consequence_pre. apply IHc2. 
+      intros. destruct H. apply H.   
+    - eapply H_Consequence_post. apply H_While.
+      eapply H_Consequence_pre. apply IHc.
+      intros. destruct H. apply H. 
+      intros. simpl in H. destruct H. inversion H.
+Qed.
 (** [] *)
 
 
@@ -288,7 +313,20 @@ Proof.
 Theorem hoare_sound : forall P c Q,
   derivable P c Q -> valid P c Q.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. induction X.
+  - unfold valid. intros. inversion H. subst. auto.
+  - unfold valid. intros. inversion H. subst. auto.
+  - unfold valid in *. intros. inversion H. subst.
+    apply IHX1 in H3. apply IHX2 in H6. auto. auto. auto.
+  - unfold valid in *. intros. inversion H. subst.
+    apply IHX1 in H7. auto. split. auto. auto. subst.
+    apply IHX2 in H7. auto. split. auto. auto.
+  - unfold valid in *. intros. remember <{ while b do c end }>.
+    induction H ; inversion Heqc0.
+    + subst. auto.
+    + subst. apply IHX in H1. apply IHceval2. reflexivity. auto. auto.
+  - unfold valid in *. intros. apply q. apply IHX in H. auto. auto. 
+Qed. 
 (** [] *)
 
 (** The proof of completeness is more challenging.  To carry out the
@@ -333,7 +371,9 @@ Proof. eauto. Qed.
 Lemma wp_seq : forall P Q c1 c2,
     derivable P c1 (wp c2 Q) -> derivable (wp c2 Q) c2 Q -> derivable P <{c1; c2}> Q.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. eapply H_Seq. 
+  apply X. apply X0.
+Qed.
 
 (** [] *)
 
@@ -346,7 +386,11 @@ Proof.
 Lemma wp_invariant : forall b c Q,
     valid (wp <{while b do c end}> Q /\ b) c (wp <{while b do c end}> Q).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  unfold valid.
+  intros. unfold valid. unfold wp. intros.
+  destruct H0. apply H0.
+  eapply E_WhileTrue. auto. apply H. apply H1.
+Qed.
 
 (** [] *)
 
@@ -368,7 +412,37 @@ Theorem hoare_complete: forall P c Q,
 Proof.
   unfold valid. intros P c. generalize dependent P.
   induction c; intros P Q HT.
-  (* FILL IN HERE *) Admitted.
+  - eapply H_Consequence_post. 
+    constructor. intros. apply HT with (st).
+    constructor. auto.
+  - eapply H_Consequence_pre. constructor.
+    intros. unfold assn_sub. apply HT with st.
+    constructor. reflexivity. auto.
+  - apply wp_seq. 
+    + apply IHc1. intros. 
+      unfold wp. intros.
+      eapply HT. eapply E_Seq. 
+      apply H.  apply H1. apply H0.
+    + apply IHc2. unfold wp. intros.
+      apply H0. apply H.
+  - apply H_If. apply IHc1. intros.
+    apply HT with st. constructor.
+    destruct H0. auto. auto. destruct H0.
+    auto. apply IHc2. intros. apply HT with st.
+    eapply E_IfFalse. destruct H0. unfold not in H1. simpl in H1.
+    destruct (beval st b). 
+    + assert (true = true) by reflexivity. apply H1 in H2. inversion H2.
+    + reflexivity.
+    + auto.
+    + destruct H0. auto.
+  - eapply H_Consequence. constructor. 
+    + apply IHc. eapply wp_invariant.
+    + intros. unfold wp. intros. eapply HT. apply H0. apply H.
+    + unfold wp. intros. destruct H. eapply H.  
+      apply E_WhileFalse. unfold not in H0. simpl in H0. 
+      destruct (beval st b).
+      destruct H0. reflexivity. reflexivity.
+Qed.
 
 (** [] *)
 

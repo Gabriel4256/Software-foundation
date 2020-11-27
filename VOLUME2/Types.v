@@ -180,7 +180,14 @@ Hint Unfold stuck : core.
 Example some_term_is_stuck :
   exists t, stuck t.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  exists (prd tru).
+  unfold stuck.
+  split.
+  - unfold step_normal_form.
+    unfold not. intros. destruct H. inversion H. subst.
+    inversion H1.
+  - unfold not. intros. inversion H ; inversion H0. 
+Qed.
 (** [] *)
 
 (** However, although values and normal forms are _not_ the same in
@@ -192,7 +199,15 @@ Proof.
 Lemma value_is_nf : forall t,
   value t -> step_normal_form t.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros. inversion_clear H. 
+  - induction H0 ;unfold step_normal_form ;unfold not ;intros.
+    + destruct H. inversion H.
+    + destruct H. inversion H.
+  - induction H0. unfold step_normal_form, not.  intros. 
+    + destruct H. inversion H.
+    + unfold step_normal_form, not in *. intros. destruct H.
+      inversion H. subst. apply IHnvalue. exists t1'. auto.
+Qed.
 
 (** (Hint: You will reach a point in this proof where you need to
     use an induction to reason about a term that is known to be a
@@ -212,7 +227,37 @@ Proof.
 Theorem step_deterministic:
   deterministic step.
 Proof with eauto.
-  (* FILL IN HERE *) Admitted.
+  unfold deterministic.
+  assert (Hsub: forall n t, nvalue n -> n --> t -> False). {
+    intros. assert (step_normal_form n). apply value_is_nf.
+    unfold value. right. apply H. unfold step_normal_form in H1.
+    destruct H1. exists t. auto.
+  } 
+
+  intros. generalize dependent y2. induction H.
+  - intros. inversion H0;subst. reflexivity. inversion H4. 
+  - intros. inversion H0;subst. reflexivity. inversion H4.
+  - intros. inversion H0;subst. inversion H. inversion H. 
+    apply IHstep in H5. rewrite H5. reflexivity.
+  - intros. inversion H0. subst. apply IHstep in H2. rewrite H2. reflexivity.
+  - intros. inversion H0 ;subst. reflexivity. inversion H1.
+  - intros. inversion H0 ; subst. reflexivity. inversion H2 ; subst.
+    assert(step_normal_form v). { apply value_is_nf. unfold value. right. auto. }
+    unfold step_normal_form in H1. unfold not in H1. destruct H1. exists t1'0. auto.
+  - intros. inversion H0 ; subst. 
+    + inversion H.
+    + inversion H. subst. assert (step_normal_form y2). { 
+        apply value_is_nf. unfold value. right. auto. }
+      unfold step_normal_form in H1. unfold not in H1. destruct H1.
+      exists t1'0. auto.
+    + apply IHstep in H2. rewrite H2. reflexivity.
+  - intros. inversion H0 ;subst. reflexivity. inversion H1.
+  - intros. inversion H0 ; subst. reflexivity. inversion H2.
+    subst. eapply Hsub in H. inversion H. apply H3.
+  - intros. inversion H0 ;subst. inversion H.
+    inversion H. subst. eapply Hsub in H2. inversion H2.
+    apply H3. apply IHstep in H2. rewrite H2. reflexivity.
+Qed.
 (** [] *)
 
 (* ================================================================= *)
@@ -319,8 +364,9 @@ Example scc_hastype_nat__hastype_nat : forall t,
   |- scc t \in Nat ->
   |- t \in Nat.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros. inversion H. auto.   
+Qed.
+  (** [] *)
 
 (* ----------------------------------------------------------------- *)
 (** *** Canonical forms *)
@@ -379,7 +425,26 @@ Proof.
     + (* t1 can take a step *)
       destruct H as [t1' H1].
       exists (test t1' t2 t3). auto.
-  (* FILL IN HERE *) Admitted.
+  - (* T_Scc*) destruct IHHT.
+    + left. apply nat_canonical in H. 
+      destruct H; auto. 
+      auto.
+    + destruct H. right. exists (scc x). auto.
+  - destruct IHHT.
+    + right. apply nat_canonical in H.
+      inversion H ; subst.
+      * exists zro. auto.
+      * exists t. auto.
+      * auto.
+    + right. destruct H. exists (prd x).
+      auto.
+  - destruct IHHT.
+    + apply nat_canonical in H. destruct H.
+      * right. exists tru. auto.
+      * right. exists fls. auto.
+      * auto.
+    + destruct H. right. exists (iszro x). auto.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced (finish_progress_informal) 
@@ -390,6 +455,7 @@ Proof.
     [t --> t'] for some [t']. *)
 
 (** _Proof_: By induction on a derivation of [|- t \in T].
+    - last rule이 T_Tru, T_Fls, T_Zro인 경우 => t는 value임
 
     - If the last rule in the derivation is [T_Test], then [t = test t1
       then t2 else t3], with [|- t1 \in Bool], [|- t2 \in T] and [|- t3
@@ -407,7 +473,38 @@ Proof.
       - If [t1] itself can take a step, then, by [ST_Test], so can
         [t].
 
-    - (* FILL IN HERE *)
+    - 마지막 rule이 T_SCc인 경우
+      t1은 scc t2 형태일 것이고, t2 \in Nat이다.
+      induction에 의해 t2는 value이거나 step을 밟을 수 있다.
+      
+      - t2가 value인 경우, canonical form에 의해 t2는 zro거나 scc t3의 형태
+        - t2가 zro인 경우 t1 = scc zro는 value이므로 성립
+        - t2가 scc t3인 경우, t3는 value이므로 scc t3도 value, scc (scc t3)도 value
+          따라서 t도 value
+
+      - t2 --> t3인 경우, t1 --> scc t3 by ST_Scc
+
+    - 마지막 rule이 T_Prd인 경우
+      t = prd t1 , t1은 Nat type
+      - t1이 value인 경우
+        t1은 zro거나 scc t2, zro인 경우는 prd zro  -> zro이므로 step을 밟을 수 있고
+        scc t2인 경우는 prd (scc t2) -> t2로 마찬가지로 스텝을 밟을 수 있다.
+
+      - t1 --> t2인 경우
+        이전과 동일하게 즐명 가능
+
+    - 마지막 룰이 T_Iszro인 경우
+      t = iszro t1 형태, t1은 마찬가지로 value이거나 step을 밟을 수 있거나
+
+      - t1이 value인 경우
+        t1은 Nat type이므로 canonical form에 의해 t1은 zro이거나 scc t2임 (t2는 value)
+        - t1이 zro인 경우 iszro t1 -> tru이므로 step을 밟을 수 있다.
+        - t1이 scc t2인 경우, t = iszro (scc t2) 이므로 ST_IszroScc에 의해 
+          t --> fls
+
+      - t1 --> t2인 경우
+        t = iszro t1  --> iszro t2
+      
  *)
 (* Do not modify the following line: *)
 Definition manual_grade_for_finish_progress_informal : option (nat*string) := None.
@@ -448,7 +545,12 @@ Proof.
       + (* ST_TestFls *) assumption.
       + (* ST_Test *) apply T_Test; try assumption.
         apply IHHT1; assumption.
-    (* FILL IN HERE *) Admitted.
+    - (* T_Scc*) inversion HE ; subst. apply T_Scc. apply IHHT. assumption.
+    - (* T_Prd*) inversion HE ; subst ; try assumption.
+      + inversion HT. subst. apply H1.
+      + apply T_Prd. apply IHHT. auto.
+    - (* IsZro*) inversion HE ; subst ; auto.
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, advanced (finish_preservation_informal) 
@@ -479,7 +581,18 @@ Proof.
         by the IH, [|- t1' \in Bool].  The [T_Test] rule then gives us
         [|- test t1' then t2 else t3 \in T], as required.
 
-    - (* FILL IN HERE *)
+    - last rule이 T_Scc라면, t는 scc t1의 형태이며, t1 in Nat이다.
+      induction에 의해 t1 -> t1' 일 때 t1'도 in Nat이다.
+      scc t1 -> scc t1'이고, t1'이  in nat이므로 scc t1'도 in Nat이다.
+  
+    - Last rule이 T_Prd라면, t는 prd t1의 형태이며, t1 in Nat이다.
+      induction에 의해 t1 -> t1' 일 때 t1'도 in Nat이다.
+      prd t1 -> prd t1'이고, t1'은 in Nat이므로 prd t1'도 in Nat
+
+    - last rule이 T_Iszro라면, t는 iszro t1이며 t1 in Nat이다.
+      induction에 의해 t1 -> t1' 일 때 t1'도 in Nat이다.
+      iszro t1 -> iszro t1' 이고, t1'이 in Nat이므로 iszro t1'은 in bool이다.
+
 *)
 (* Do not modify the following line: *)
 Definition manual_grade_for_finish_preservation_informal : option (nat*string) := None.
@@ -499,7 +612,19 @@ Theorem preservation' : forall t t' T,
   t --> t' ->
   |- t' \in T.
 Proof with eauto.
-  (* FILL IN HERE *) Admitted.
+  intros. generalize dependent T. 
+  induction H0 ; intros.
+  - (* test tru *) inversion H. auto.
+  - (* test fls *) inversion H. auto.
+  - (* ST_Test *) inversion H. subst. auto.
+  - (* ST_Scc *) inversion H. subst. auto.
+  - (* ST_PrdZro *) inversion H. subst. auto.
+  - (* ST_PrdScc*)  inversion H0 ;  subst. inversion H2. subst. auto.
+  - (* ST_Prd*) inversion H. subst. apply T_Prd. auto.
+  - (* ST_IszroZro *) inversion H. subst. auto.
+  - (* ST_iszroSCc*) inversion H0. subst. auto.  
+  - (* ST_isZro*) inversion H. subst. constructor. auto.
+Qed.
 (** [] *)
 
 (** The preservation theorem is often called _subject reduction_,
@@ -543,6 +668,20 @@ Qed.
 
     (* FILL IN HERE *)
 *)
+
+Theorem subject_expansion_contra :
+  exists t t' T, ~ (|- t' \in T ->
+  t --> t' ->
+  |- t \in T ).
+Proof with eauto.
+  intros.
+  exists ((test tru fls zro)). exists (fls). exists Bool.
+  unfold not. intros.
+  assert ( |- fls \in Bool) by auto.
+  apply H in H0. inversion H0. subst.
+  inversion H7. auto.
+Qed.
+
 (* Do not modify the following line: *)
 Definition manual_grade_for_subject_expansion : option (nat*string) := None.
 (** [] *)
@@ -560,11 +699,11 @@ Definition manual_grade_for_subject_expansion : option (nat*string) := None.
    else "becomes false." If a property becomes false, give a
    counterexample.
       - Determinism of [step]
-            (* FILL IN HERE *)
+            remains true
       - Progress
-            (* FILL IN HERE *)
+            remains true
       - Preservation
-            (* FILL IN HERE *)
+            remains true
 *)
 (* Do not modify the following line: *)
 Definition manual_grade_for_variation1 : option (nat*string) := None.
@@ -579,7 +718,10 @@ Definition manual_grade_for_variation1 : option (nat*string) := None.
 
    Which of the above properties become false in the presence of
    this rule?  For each one that does, give a counter-example.
-            (* FILL IN HERE *)
+
+   Determinism: becomes false
+   Progress: remains true
+   Preservation: remains true
 *)
 (* Do not modify the following line: *)
 Definition manual_grade_for_variation2 : option (nat*string) := None.
@@ -596,6 +738,9 @@ Definition manual_grade_for_variation2 : option (nat*string) := None.
    Which of the above properties become false in the presence of
    this rule?  For each one that does, give a counter-example.
             (* FILL IN HERE *)
+   Determinism: becomes false,
+   Progress: true
+   Preservation: true
 *)
 (** [] *)
 
@@ -609,6 +754,9 @@ Definition manual_grade_for_variation2 : option (nat*string) := None.
    Which of the above properties become false in the presence of
    this rule?  For each one that does, give a counter-example.
 (* FILL IN HERE *)
+    Determinism: true
+    Progress: true
+    Preservation :true
 *)
 (** [] *)
 
@@ -622,7 +770,10 @@ Definition manual_grade_for_variation2 : option (nat*string) := None.
    Which of the above properties become false in the presence of
    this rule?  For each one that does, give a counter-example.
 (* FILL IN HERE *)
-*)
+    Determinism: true
+    Progress: true
+    Preservation: False
+*) 
 (** [] *)
 
 (** **** Exercise: 2 stars, standard, optional (variation6) 
@@ -635,6 +786,9 @@ Definition manual_grade_for_variation2 : option (nat*string) := None.
    Which of the above properties become false in the presence of
    this rule?  For each one that does, give a counter-example.
 (* FILL IN HERE *)
+  Determinism: true
+  Progress: true
+  Preservation: False
 *)
 (** [] *)
 
@@ -658,6 +812,8 @@ Definition manual_grade_for_variation2 : option (nat*string) := None.
     [step]?  Would doing so create any problems elsewhere?
 
 (* FILL IN HERE *)
+  ST_PrdZro를 없애면 progress가 false로 바뀐다. 
+  왜냐하면 prd zero는 Nat type이지만 value도 아니고 step도 없기 때문
 *)
 (* Do not modify the following line: *)
 Definition manual_grade_for_remove_predzro : option (nat*string) := None.

@@ -434,7 +434,33 @@ Check <{[x:=true] x}>.
 Inductive substi (s : tm) (x : string) : tm -> tm -> Prop :=
   | s_var1 :
       substi s x (tm_var x) s
-  (* FILL IN HERE *)
+  | s_var2 :
+      forall y,
+      ~ (x = y) ->
+      substi s x (tm_var y) (tm_var y)
+  | s_abs1:
+      forall y T c c',
+      ~ (x = y) ->
+      substi s x c c' ->
+      substi s x (tm_abs y T c) (tm_abs y T c')
+  | s_abs2 :
+      forall T c,
+      substi s x (tm_abs x T c) (tm_abs x T c)
+  | s_app :
+      forall t1 t1' t2 t2',
+      substi s x t1 t1' ->
+      substi s x t2 t2' ->
+      substi s x (tm_app t1 t2) (tm_app t1' t2')
+  | s_tru :
+      substi s x tm_true tm_true
+  | s_fls :
+      substi s x tm_false tm_false
+  | s_if :
+      forall t1 t1' t2 t2' t3 t3',
+      substi s x t1 t1' ->
+      substi s x t2 t2' ->
+      substi s x t3 t3' ->
+      substi s x (tm_if t1 t2 t3) (tm_if t1' t2' t3')
 .
 
 Hint Constructors substi : core.
@@ -442,7 +468,41 @@ Hint Constructors substi : core.
 Theorem substi_correct : forall s x t t',
   <{ [x:=s]t }> = t' <-> substi s x t t'.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  split.  generalize dependent s. 
+  generalize dependent t'. 
+  - induction t ; intros.
+    + subst. destruct (eqb_string x0 s) eqn:H.
+      * unfold subst. rewrite H. apply eqb_string_true_iff in H. 
+        rewrite H. auto.
+      * unfold subst. rewrite H. apply eqb_string_false_iff in H.
+        auto.
+    + simpl in H. rewrite <- H. apply s_app.
+      auto. auto.
+    + destruct (eqb_string x0 s) eqn:H2 ; simpl in H ; rewrite H2 in H.
+      * rewrite <- H. apply eqb_string_true_iff in H2.
+        rewrite H2. auto.
+      * rewrite <- H. apply eqb_string_false_iff in H2.
+        auto.
+    + simpl in H. rewrite <- H. auto.
+    + simpl in H. rewrite <- H. auto.
+    + simpl in H. rewrite <- H. constructor.
+      auto. auto. auto.
+  - generalize dependent t'. induction t ; intros.
+    + inversion H ; subst. unfold subst. 
+      rewrite <- eqb_string_refl. reflexivity.
+      unfold subst. rewrite <- eqb_string_false_iff in H1.
+      rewrite H1. reflexivity.
+    + inversion H ; subst. simpl. apply IHt1 in H2.
+      apply IHt2 in H4. rewrite <- H2. rewrite <- H4. reflexivity.
+    + inversion H ; subst. simpl. 
+      rewrite <- eqb_string_false_iff in H4. rewrite H4.
+      apply IHt in H5. rewrite <- H5. reflexivity.
+      simpl. rewrite <- eqb_string_refl. reflexivity.
+    + simpl. inversion H. reflexivity.
+    + inversion H. auto. 
+    + inversion H. subst. simpl. apply IHt1 in H3.
+      apply IHt2 in H5. apply IHt3 in H6.  subst. reflexivity. 
+Qed.
 (** [] *)
 
 (* ================================================================= *)
@@ -635,14 +695,23 @@ Lemma step_example5 :
        <{idBBBB idBB idB}>
   -->* idB.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  eapply multi_step.
+  - apply ST_App1. apply ST_AppAbs. auto.
+  - eapply multi_step. apply ST_AppAbs. auto.
+    simpl. constructor.
+Qed.
 
 Lemma step_example5_with_normalize :
        <{idBBBB idBB idB}>
   -->* idB.
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  eapply multi_step. 
+    apply ST_App1. apply ST_AppAbs. auto.
+  eapply multi_step.
+    apply ST_AppAbs. auto.
+  simpl. constructor. 
+Qed.
+  (** [] *)
 
 (* ################################################################# *)
 (** * Typing *)
@@ -775,7 +844,11 @@ Example typing_example_2_full :
           (y (y x)) \in
     (Bool -> (Bool -> Bool) -> Bool).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  apply T_Abs. apply T_Abs. eapply T_App.
+  apply T_Var. apply update_eq. 
+  eapply T_App. apply T_Var. apply update_eq.
+  apply T_Var. auto.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, standard (typing_example_3) 
@@ -797,7 +870,13 @@ Example typing_example_3 :
                (y (x z)) \in
       T.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  eexists.
+  apply T_Abs. apply T_Abs. apply T_Abs.
+  eapply T_App. apply T_Var. unfold update. unfold t_update. simpl. 
+  reflexivity.   
+  eapply T_App. apply T_Var. unfold update, t_update. reflexivity.
+  apply T_Var. unfold update, t_update. reflexivity.
+Qed.
 (** [] *)
 
 (** We can also show that some terms are _not_ typable.  For example,
@@ -839,8 +918,21 @@ Example typing_nonexample_3 :
         empty |-
           \x:S, x x \in T).
 Proof.
-  (* FILL IN HERE *) Admitted.
-(** [] *)
+  intros not.
+  inversion not.
+  inversion H. 
+  inversion H0. subst ; clear H0.
+  inversion H6 ;subst ; clear H6.
+  inversion H5; subst ; clear H5.
+  inversion H3; subst ; clear H3.
+  rewrite H2 in H4. inversion H4.
+  generalize dependent T1.
+  induction T2 ; intros.
+  - inversion H1.
+  - inversion H4. subst. rewrite <- H3 in H2.
+    eapply IHT2_1. apply H2. rewrite <- H3 in H4. apply H4.
+    apply H3. 
+Qed.
 
 End STLC.
 
